@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Kayıt Ol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-green-100 to-teal-200 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md p-8 bg-white shadow-xl rounded-2xl">
+        <h2 class="text-2xl font-bold mb-6 text-center text-teal-700">Kayıt Ol</h2>
+
+        <!-- Şifre kuralları -->
+        <div class="mb-4 p-3 bg-blue-50 text-blue-700 text-sm rounded-md border border-blue-200">
+            Şifreniz:
+            <ul class="list-disc list-inside ml-4 mt-1">
+                <li>En az 8 karakter olmalı</li>
+                <li>Kişisel bilgilerinizle çok benzer olmamalı</li>
+                <li>Yaygın kullanılan bir şifre olmamalı</li>
+                <li>Tamamen sayılardan oluşmamalı</li>
+            </ul>
+        </div>
+
+        <!-- Hatalar -->
+        {% if form.errors %}
+        <div class="mb-4 p-4 bg-red-100 border border-red-300 text-red-700 rounded-lg">
+            <ul class="list-disc list-inside">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Form -->
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+
+            <!-- Username -->
+            <div>
+                <label for="id_username" class="block text-sm font-medium text-gray-700">Kullanıcı Adı</label>
+                <input type="text" name="username" id="id_username" value="{{ form.username.value|default_if_none:'' }}"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label for="id_email" class="block text-sm font-medium text-gray-700">E-posta</label>
+                <input type="email" name="email" id="id_email" value="{{ form.email.value|default_if_none:'' }}"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+
+            <!-- Password1 -->
+            <div>
+                <label for="id_password1" class="block text-sm font-medium text-gray-700">Şifre</label>
+                <input type="password" name="password1" id="id_password1"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+
+            <!-- Password2 -->
+            <div>
+                <label for="id_password2" class="block text-sm font-medium text-gray-700">Şifre Tekrar</label>
+                <input type="password" name="password2" id="id_password2"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                Kayıt Ol
+            </button>
+        </form>
+
+        <p class="mt-4 text-sm text-center text-gray-600">
+            Zaten hesabın var mı?
+            <a href="{% url 'login' %}" class="text-teal-600 hover:underline">Giriş yap</a>
+        </p>
+    </div>
+</body>
+</html>

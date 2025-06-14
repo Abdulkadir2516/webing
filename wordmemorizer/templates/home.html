@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="tr" >
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="flex h-screen bg-gray-100">
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="bg-indigo-700 text-white w-64 p-6 space-y-6 transition-transform transform -translate-x-64 md:translate-x-0 fixed md:relative h-full">
+    <h1 class="text-3xl font-bold mb-8">Dashboard</h1>
+    <nav class="space-y-4">
+      <a href="#" class="block py-2 px-4 rounded hover:bg-indigo-600">Anasayfa</a>
+      <a href="#" class="block py-2 px-4 rounded hover:bg-indigo-600">Kelime Ekle</a>
+      <a href="#" class="block py-2 px-4 rounded hover:bg-indigo-600">İstatistikler</a>
+      <a href="{% url 'logout' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Çıkış Yap</a>
+    </nav>
+  </div>
+
+  <!-- Main content -->
+  <div class="flex-1 p-8 ml-0 md:ml-64">
+    <!-- Toggle button -->
+    <button id="toggleBtn" class="mb-6 md:hidden bg-indigo-700 text-white px-4 py-2 rounded">
+      Menü
+    </button>
+
+    <h2 class="text-2xl font-bold mb-6">Günlük İstatistikler</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-xl font-semibold mb-2">Günlük Hedef</h3>
+        <p class="text-4xl font-bold text-indigo-700">20 Kelime</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-xl font-semibold mb-2">Bugün Tekrarlanan Kelime</h3>
+        <p class="text-4xl font-bold text-indigo-700">12 Kelime</p>
+      </div>
+    </div>
+
+    <div class="mt-8 bg-white p-6 rounded-lg shadow">
+      <h3 class="text-xl font-semibold mb-4">Tekrar Grafiği</h3>
+      <canvas id="repeatChart" height="100"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+
+    toggleBtn.addEventListener('click', () => {
+      if (sidebar.classList.contains('-translate-x-64')) {
+        sidebar.classList.remove('-translate-x-64');
+      } else {
+        sidebar.classList.add('-translate-x-64');
+      }
+    });
+
+    // Chart.js grafiği
+    const ctx = document.getElementById('repeatChart').getContext('2d');
+    const repeatChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
+        datasets: [{
+          label: 'Tekrar Edilen Kelimeler',
+          data: [5, 8, 10, 7, 12, 15, 12],
+          fill: false,
+          borderColor: 'rgb(99 102 241)',
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            stepSize: 1
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
